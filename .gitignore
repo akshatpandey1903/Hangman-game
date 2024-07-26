@@ -1,0 +1,21 @@
+# Ignore executables
+*.exe
+
+# Ignore object files
+*.o
+
+# Ignore Visual Studio files if you're using it
+*.vcxproj
+*.sln
+.vs/
+
+# Ignore build directories
+build/
+Debug/
+Release/
+
+# Ignore any log files
+*.log
+
+# Ignore the words file if you don't want to share your word list
+words.txt
