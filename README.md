@@ -1,3 +1,27 @@
-#### HANGMAN-GAME
-I'm creating this project because I wanted to build something I actually wanted to even if it is as simple as a hangman game. Before this I went down the rabbit hole of trying to find new projects that would make my resume look better and projects I thought 
-would land me an Internship and all I was doing was simply copying from tutorials instead of learning and creating of my own.  
+# HANGMAN-GAME
+
+## Project Motivation
+I'm creating this project because I wanted to build something I actually enjoy, even if it's as simple as a hangman game. Previously, I found myself going down the rabbit hole of trying to find projects that would make my resume look better or land me an internship. This often resulted in simply copying from tutorials instead of truly learning and creating on my own.
+
+## Current Features
+- Basic hangman gameplay
+- Word selection from a file
+- Console-based user interface
+
+## Progress
+The game is currently unfinished with some known issues:
+- Not reading full sentences from the file correctly
+
+## Future Plans
+I aim to add several features to enhance the game:
+- Options for different word genres
+- Implementing a point system
+- [Add any other specific features you're planning]
+
+## Learning Goals
+- Improve file handling in C++
+- Implement more robust error checking
+- Enhance game logic and user experience
+
+## Note 
+I'm still in my learning process, and I want to ensure I'm happy with what I create. This project represents my journey in practical C++ programming and game development.
