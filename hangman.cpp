@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <vector>
 #include <string>
@@ -6,6 +5,15 @@
 #include <cstdlib>
 #include <algorithm>
 #include <fstream> 
+#include <cctype>
+
+std::string toLowerCase(const std::string& word){
+    std::string lower;
+    for(char c : word){
+        lower += std::tolower(c);
+    }
+    return lower;
+}
 
 std::vector<std::string> readWordsFromFile(const std::string& filename){
     std::vector<std::string> wordList;
@@ -13,7 +21,7 @@ std::vector<std::string> readWordsFromFile(const std::string& filename){
     std::string word;
 
     while(file >> word) {
-        wordList.push_back(word);
+        wordList.push_back(toLowerCase(word));
     }
 
     return wordList;
@@ -62,8 +70,53 @@ void displayHangman(int wrongGuesses) {
         "  +---+\n  O   |\n /|\\  |\n /    |\n      |\n      |\n=========",
         "  +---+\n  O   |\n /|\\  |\n / \\  |\n      |\n      |\n========="
     };
+    std::cout << hangmanstates[wrongGuesses] << std::endl;
 }
 
 int main() {
+    std::vector<std::string> wordList = readWordsFromFile ("movies.txt");
+    if (wordList.empty()){
+        std::cerr << "Word List is empty or File not Found!!" << std::endl;
+        return 1;
+    }
+
+    srand(static_cast<unsigned int>(time(0)));
     
+    char playAgain;
+    do{
+        std::string word = chooseWord(wordList);
+        std::string guessedLetters;
+        int wrongGuesses = 0;
+        const int maxWrongGuesses = 6;
+
+        while(wrongGuesses < maxWrongGuesses && !isWordGuessed(word, guessedLetters)){
+            displayGameState(word, guessedLetters);
+            displayHangman(wrongGuesses);
+
+            std::cout << "Enter your guess: ";
+            char guess;
+            std::cin >> guess;
+            guess = tolower(guess);
+
+            if(isGuessCorrect(word, guess)){
+                std::cout << "Guess is correct :)" << std::endl;
+                updateGuessedLetters(guessedLetters, guess);
+            }else{
+                std::cout << "Incorrect Guess :(" << std::endl;
+                ++wrongGuesses;
+            }
+        }
+
+        if(isWordGuessed(word, guessedLetters)){
+            std::cout << "Congrats!! You've guessed the word: " << word << std::endl;
+        }else{
+            std::cout << "Unluckyy, You've been hanged! The word was: " << word << std::endl;
+        }
+
+        std::cout << "Do you wanna play again? (y/n): ";
+        std::cin >> playAgain;
+        playAgain = tolower(playAgain);
+    }while(playAgain == 'y');
+
+    return 0;
 }
