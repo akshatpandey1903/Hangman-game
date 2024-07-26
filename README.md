@@ -16,7 +16,7 @@ The game is currently unfinished with some known issues:
 I aim to add several features to enhance the game:
 - Options for different word genres
 - Implementing a point system
-- [Add any other specific features you're planning]
+- Creating an Interface
 
 ## Learning Goals
 - Improve file handling in C++
