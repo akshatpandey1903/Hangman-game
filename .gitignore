@@ -19,3 +19,5 @@ Release/
 
 # Ignore the words file if you don't want to share your word list
 words.txt
+
+.vscode
