@@ -7,21 +7,13 @@
 #include <fstream> 
 #include <cctype>
 
-std::string toLowerCase(const std::string& word){
-    std::string lower;
-    for(char c : word){
-        lower += std::tolower(c);
-    }
-    return lower;
-}
-
 std::vector<std::string> readWordsFromFile(const std::string& filename){
     std::vector<std::string> wordList;
     std::ifstream file(filename);
-    std::string word;
+    std::string line;
 
-    while(file >> word) {
-        wordList.push_back(toLowerCase(word));
+    while(std::getline(file, line)) {
+        std::transform(line.begin(), line.end(), line.begin(), ::tolower);
     }
 
     return wordList;
@@ -34,7 +26,7 @@ std::string chooseWord(const std::vector<std::string>& wordList) {
 
 void displayGameState(const std::string& word, const std::string& guessedLetters) {
     for(char c : word){
-        if(guessedLetters.find(c) != std::string::npos){
+        if(guessedLetters.find(c) != std::string::npos || !std::isalpha(c)){
             std::cout << c << ' ';
         }else{
             std::cout << "_ ";
@@ -45,7 +37,7 @@ void displayGameState(const std::string& word, const std::string& guessedLetters
 
 bool isWordGuessed(const std::string& word, const std::string& guessedLetters){
     for(char c : word){
-        if(guessedLetters.find(c) == std::string::npos){
+        if(std::isalpha(c) && guessedLetters.find(c) == std::string::npos){
             return false;
         }
     }
