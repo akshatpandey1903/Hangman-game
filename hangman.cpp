@@ -14,6 +14,7 @@ std::vector<std::string> readWordsFromFile(const std::string& filename){
 
     while(std::getline(file, line)) {
         std::transform(line.begin(), line.end(), line.begin(), ::tolower);
+        wordList.push_back(line);
     }
 
     return wordList;
