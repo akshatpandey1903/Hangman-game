@@ -7,14 +7,23 @@
 #include <fstream> 
 #include <cctype>
 
-std::vector<std::string> readWordsFromFile(const std::string& filename){
+std::vector<std::string> readWordsFromFile(const std::string& filename) {
     std::vector<std::string> wordList;
     std::ifstream file(filename);
     std::string line;
 
-    while(std::getline(file, line)) {
+    while (std::getline(file, line)) {
+        // Remove any trailing whitespace
+        line.erase(std::find_if(line.rbegin(), line.rend(), [](unsigned char ch) {
+            return !std::isspace(ch);
+        }).base(), line.end());
+
+        // Convert to lowercase
         std::transform(line.begin(), line.end(), line.begin(), ::tolower);
-        wordList.push_back(line);
+        
+        if (!line.empty()) {
+            wordList.push_back(line);
+        }
     }
 
     return wordList;
@@ -26,11 +35,15 @@ std::string chooseWord(const std::vector<std::string>& wordList) {
 }
 
 void displayGameState(const std::string& word, const std::string& guessedLetters) {
-    for(char c : word){
-        if(guessedLetters.find(c) != std::string::npos || !std::isalpha(c)){
-            std::cout << c << ' ';
-        }else{
-            std::cout << "_ ";
+    for (char c : word) {
+        if (std::isalpha(c)) {
+            if (guessedLetters.find(c) != std::string::npos) {
+                std::cout << c << ' ';
+            } else {
+                std::cout << "_ ";
+            }
+        } else {
+            std::cout << c << ' ';  // Display non-alphabetic characters as is
         }
     }
     std::cout << std::endl;
