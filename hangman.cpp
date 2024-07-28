@@ -5,25 +5,19 @@
 #include <cstdlib>
 #include <algorithm>
 #include <fstream>
-#include <cctype>
+#include <cctype> 
 
 std::vector<std::string> readWordsFromFile(const std::string& filename) {
     std::vector<std::string> wordList;
-    std::ifstream file;
-    file.open(filename);
+    std::ifstream file(filename);
     std::string line;
 
     while (std::getline(file, line)) {
-        
-        line.erase(std::find_if(line.rbegin(), line.rend(), [](unsigned char ch) {
-            return !std::isspace(ch);
-        }).base(), line.end());
-
-        if (!line.empty()) {
-            wordList.push_back(line);
-        }
+        // Convert the entire line to lowercase
+        std::transform(line.begin(), line.end(), line.begin(), ::tolower);
+        wordList.push_back(line);
     }
-    file.close();
+
     return wordList;
 }
 
@@ -34,14 +28,10 @@ std::string chooseWord(const std::vector<std::string>& wordList) {
 
 void displayGameState(const std::string& word, const std::string& guessedLetters) {
     for (char c : word) {
-        if (std::isalpha(c)) {
-            if (guessedLetters.find(std::tolower(c)) != std::string::npos) {
-                std::cout << c << ' ';
-            } else {
-                std::cout << "_ ";
-            }
+        if (!std::isalpha(c) || guessedLetters.find(c) != std::string::npos) {
+            std::cout << c << ' '; // Display the character if guessed or if it is not an alphabet (e.g., space, punctuation)
         } else {
-            std::cout << c << ' ';  
+            std::cout << "_ ";
         }
     }
     std::cout << std::endl;
@@ -49,7 +39,7 @@ void displayGameState(const std::string& word, const std::string& guessedLetters
 
 bool isWordGuessed(const std::string& word, const std::string& guessedLetters) {
     for (char c : word) {
-        if (std::isalpha(c) && guessedLetters.find(std::tolower(c)) == std::string::npos) {
+        if (std::isalpha(c) && guessedLetters.find(c) == std::string::npos) {
             return false;
         }
     }
@@ -57,15 +47,11 @@ bool isWordGuessed(const std::string& word, const std::string& guessedLetters) {
 }
 
 bool isGuessCorrect(const std::string& word, char guess) {
-    return std::any_of(word.begin(), word.end(), [guess](char c) {
-        return std::tolower(c) == std::tolower(guess);
-    });
+    return word.find(guess) != std::string::npos;
 }
 
 void updateGuessedLetters(std::string& guessedLetters, char guess) {
-    if (guessedLetters.find(guess) == std::string::npos) {
-        guessedLetters += guess;
-    }
+    guessedLetters += guess;
 }
 
 void displayHangman(int wrongGuesses) {
@@ -104,7 +90,7 @@ int main() {
             std::cout << "Enter your guess: ";
             char guess;
             std::cin >> guess;
-            guess = std::tolower(guess);
+            guess = tolower(guess);
 
             if (isGuessCorrect(word, guess)) {
                 std::cout << "Correct guess!" << std::endl;
@@ -116,16 +102,15 @@ int main() {
         }
 
         if (isWordGuessed(word, guessedLetters)) {
-            std::cout << "Congratulations! You've guessed the movie: " << word << std::endl;
+            std::cout << "Congratulations! You've guessed the word: " << word << std::endl;
         } else {
-            std::cout << "You've been hanged! The movie was: " << word << std::endl;
+            std::cout << "You've been hanged! The word was: " << word << std::endl;
         }
 
         std::cout << "Play again? (y/n): ";
         std::cin >> playAgain;
-        playAgain = std::tolower(playAgain);
+        playAgain = tolower(playAgain);
     } while (playAgain == 'y');
-
 
     return 0;
 }
