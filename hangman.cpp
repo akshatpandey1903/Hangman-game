@@ -7,8 +7,9 @@
 #include <fstream>
 #include <cctype> 
 
-std::vector<std::string> readWordsFromFile(const std::string& filename) {
+std::vector<std::string> readWordsFromFile(const std::string& category) {
     std::vector<std::string> wordList;
+    std::string filename = category + ".txt";
     std::ifstream file(filename);
     std::string line;
 
@@ -19,6 +20,10 @@ std::vector<std::string> readWordsFromFile(const std::string& filename) {
     }
 
     return wordList;
+}
+
+std::vector<std::string> listCategories(){
+    return {"Movies", "Games", "Animals", "Countries"};
 }
 
 std::string chooseWord(const std::vector<std::string>& wordList) {
