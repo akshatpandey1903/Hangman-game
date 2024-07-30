@@ -26,12 +26,25 @@ std::vector<std::string> listCategories(){
     return {"Movies", "Games", "Animals", "Countries"};
 }
 
+std::string chooseCategory() {
+    std::vector<std::string> categories = listCategories();
+    std::cout << "Choose a category:\n";
+    for(size_t i{}; i<categories.size(); ++i){
+        std::cout << i + 1 << ". " << categories[i] << std::endl;
+    }
+
+    int choice;
+    std::cin >> choice;
+    return categories[choice - 1];
+}
+
 std::string chooseWord(const std::vector<std::string>& wordList) {
     int index = rand() % wordList.size();
     return wordList[index];
 }
 
-void displayGameState(const std::string& word, const std::string& guessedLetters) {
+void displayGameState(const std::string& word, const std::string& guessedLetters, const std::string category) {
+    std::cout << "Category: " << category << std::endl;
     for (char c : word) {
         if (!std::isalpha(c) || guessedLetters.find(c) != std::string::npos) {
             std::cout << c << ' '; // Display the character if guessed or if it is not an alphabet (e.g., space, punctuation)
@@ -60,6 +73,7 @@ void updateGuessedLetters(std::string& guessedLetters, char guess) {
 }
 
 void displayHangman(int wrongGuesses) {
+    
     static const std::vector<std::string> hangmanStates = {
         "  +---+\n      |\n      |\n      |\n      |\n      |\n=========",
         "  +---+\n  O   |\n      |\n      |\n      |\n      |\n=========",
@@ -73,23 +87,34 @@ void displayHangman(int wrongGuesses) {
 }
 
 int main() {
-    std::vector<std::string> wordList = readWordsFromFile("movies.txt");
-    if (wordList.empty()) {
-        std::cerr << "Word list is empty or file not found!" << std::endl;
-        return 1;
-    }
-
     srand(static_cast<unsigned int>(time(0)));
+    
+    std::string category;
+    std::vector<std::string> wordList;
 
     char playAgain;
     do {
+        category = chooseCategory();
+        wordList = readWordsFromFile(category);
+        
+        if(wordList.empty()){
+            std::cerr << "Word list is empty or File could not be found for the chosen category: " << category << std::endl;
+            std::cout << "Would you like to choose another category? (y/n): ";
+            char tryAgain;
+            std::cin >> tryAgain;
+            if(towlower(tryAgain) != 'y'){
+                break;
+            } 
+            continue;
+        }
+
         std::string word = chooseWord(wordList);
         std::string guessedLetters;
         int wrongGuesses = 0;
         const int maxWrongGuesses = 6;
 
         while (wrongGuesses < maxWrongGuesses && !isWordGuessed(word, guessedLetters)) {
-            displayGameState(word, guessedLetters);
+            displayGameState(word, guessedLetters, category);
             displayHangman(wrongGuesses);
 
             std::cout << "Enter your guess: ";
@@ -114,8 +139,11 @@ int main() {
 
         std::cout << "Play again? (y/n): ";
         std::cin >> playAgain;
-        playAgain = tolower(playAgain);
-    } while (playAgain == 'y');
+        if(tolower(playAgain) != 'y'){
+            break;
+        }
+    } while (true);
 
+    std::cout << "\nThanks for Playing =)\n";
     return 0;
 }
