@@ -9,14 +9,14 @@ I'm creating this project because I wanted to build something I actually enjoy, 
 - Console-based user interface
 
 ## Progress
-The game is currently unfinished with some known issues:
-- Not reading full sentences from the file correctly
+The game is currently a simple game which runs on the the terminal
 
 ## Future Plans
 I aim to add several features to enhance the game:
 - Options for different word genres
 - Implementing a point system
 - Creating an Interface
+- Adding difficulty levels
 
 ## Learning Goals
 - Improve file handling in C++
