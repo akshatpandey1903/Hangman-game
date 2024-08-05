@@ -13,7 +13,7 @@ The game is currently a simple game which runs on the the terminal
 
 ## Future Plans
 I aim to add several features to enhance the game:
-- Options for different word genres
+- Options for different word genres (Update: DONE ✅)
 - Implementing a point system
 - Creating an Interface
 - Adding difficulty levels
